@@ -1,39 +1,93 @@
 import types from './types';
+import fetch from 'cross-fetch';
 
-// const addTodo = value => (dispatch, getState) => {
-//   // const post = await fetch('https://moocs-todo.herokuapp.com/api/tasks').then(response => response.json());
+const addTodo = value => {
+  return dispatch => {
+    return fetch('https://moocs-todo.herokuapp.com/api/tasks', {
+      method: 'POST',
+      body: JSON.stringify({ title: value, status: "DOING" }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        console.log("addTodo ok!", response);
+        const data = fetch('https://moocs-todo.herokuapp.com/api/tasks').then(response => response.json());
+        return data;
+      }
+    }).then(data => {
+      return dispatch(receiveTodolistJson(data));
+    }).catch(error => console.error('Error:', error));
+  }
+}
 
-//   const post = await fetch('https://moocs-todo.herokuapp.com/api/tasks', {
-//     method: 'POST',
-//     body: JSON.stringify({ title: "Meeting", status: "DOING" }),
-//     headers: {
-//       'content-type': 'application/json'
-//     }
-//   })
-//     .then(res => res.json())
-//     .then(result => {
-//       res.send(result);
-//     })
-//     .catch(error => console.error('Error:', error));
-//   dispatch(fetchTodolistJson(post));
-// }
+const deleteTodo = id => {
+  return dispatch => {
+    return fetch(`https://moocs-todo.herokuapp.com/api/tasks/${id}/ `, {
+      method: 'DELETE',
+    }).then(response => {
+      if (response.ok) {
+        console.log("deleteTodo ok!", response);
+        return dispatch({
+          type: types.DELETE_TODO,
+          id
+        });
+      }
+    }).catch(error => console.error('Error:', error));
+  }
+}
 
-const addTodo = value => ({
-  type: types.ADD_TODO,
-  value: value
-});
+const toggleTodo = (id, status) => {
+  let updatedStatus = status === "DOING" ? "DONE" : "DOING";
+  return dispatch => {
+    return fetch(`https://moocs-todo.herokuapp.com/api/tasks/${id}/ `, {
+      method: 'PUT',
+      body: JSON.stringify({ status: updatedStatus }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        console.log("toggleTodo ok!", response);
+        return dispatch({
+          type: types.TOGGLE_TODO,
+          id
+        });
+      }
+    }).catch(error => console.error('Error:', error));
+  }
+}
 
-const deleteTodo = id => ({
-  type: types.DELETE_TODO,
-  id
-});
+const updateTodo = (id, title, status) => {
+  console.log("updateTodo action");
+  return dispatch => {
+    return fetch(`https://moocs-todo.herokuapp.com/api/tasks/${id}/ `, {
+      method: 'PUT',
+      body: JSON.stringify({ title: title, status }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        console.log("updateTodo ok!", response);
+        return dispatch({
+          type: types.UPDATE_TODO,
+          id,
+          title
+        });
+      }
+    }).catch(error => console.error('Error:', error));
+  }
+}
 
-const toggleTodo = id => ({
-  type: types.TOGGLE_TODO,
-  id
-});
+const fetchTodolistJson = async () => {
+  const data = await fetch('https://moocs-todo.herokuapp.com/api/tasks').then(response => response.json());
+  return dispatch => {
+    dispatch(receiveTodolistJson(data));
+  }
+}
 
-const fetchTodolistJson = json => ({
+const receiveTodolistJson = json => ({
   type: types.FETCH_TODOLIST_JSON,
   data: json
 });
@@ -43,11 +97,12 @@ const setVisibilityFilter = filter => ({
   filter
 })
 
-
 export default {
   addTodo,
+  updateTodo,
   deleteTodo,
   toggleTodo,
   fetchTodolistJson,
+  receiveTodolistJson,
   setVisibilityFilter
 }

@@ -22,7 +22,7 @@ class TodoInput extends Component {
                 input = node
               }}
             />
-            <button type="submit" className="btn" onClick={addTodo}>Add</button>
+            <button type="submit" className="btn">Add</button>
           </div>
         </form>
       </div>

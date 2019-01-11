@@ -8,9 +8,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   setVisibilityFilter: filter => Actions.setVisibilityFilter(filter),
-  fetchTodolistJson: data => Actions.fetchTodolistJson(data),
-  onTodoClick: id => Actions.toggleTodo(id),
+  fetchTodolistJson: () => Actions.fetchTodolistJson(),
+  receiveTodolistJson: data => Actions.receiveTodolistJson(data),
+  onTodoClick: (id, status) => Actions.toggleTodo(id, status),
   addTodo: value => Actions.addTodo(value),
+  updateTodo: (id, title, status) => Actions.updateTodo(id, title, status),
   deleteTodo: id => Actions.deleteTodo(id),
 }
 
