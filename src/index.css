@@ -43,25 +43,35 @@ code {
 }
 
 #todo-filter button {
+  cursor: pointer;
   width: 76px;
-  border: 1px solid #4a90e2;
+  height: 29px;
+  border-top: 1px solid #6caffc;
+  border-bottom: 1px solid #6caffc;
+  border-left: 1px solid #6caffc;
+  border-right: 0px;
   background: #fff;
   color: #4a90e2;
-  font-style: 13px;
+  font-size: 13px;
   text-align: center;
   letter-spacing: .08px;
+}
+#todo-filter .active {
+  background: #4a90e2;
+  color: #fff;
 }
 #todo-filter::after {
   clear: both;
 }
-#todo-filter:first-child {
-  border-radius: 4px 0 4px 0;
+#todo-filter button:first-child {
+  border-radius: 4px 0 0 4px;
 }
-#todo-filter:last-child {
-  border-radius: 0 4px 0 4px;
+#todo-filter button:last-child {
+  border-radius: 0 4px 4px 0;
+  border-right: 1px solid #6caffc;
 }
 #todolist {
-  height: 452px;
+  height: 400px;
 }
 
 ul {
@@ -70,12 +80,24 @@ ul {
   padding: 0;
 }
 li {
-  padding: 0 20px;
+  padding: 0 18px;
   height: 37px;
   border-bottom: 1px solid #dddddd;
 }
 li > div > label {
   line-height: 37px;
+}
+li > input {
+  margin-left: 40px;
+  font-size: 16px;
+  font-family: ArialMT;
+  color: #4f4f4f;
+}
+li > button {
+  width: 13px;
+  height: 37px;
+  background: none;
+  border: none;
 }
 
 .todo-input {
@@ -105,4 +127,98 @@ button[type="submit"] {
 }
 .pull-right {
   float: right;
+}
+
+
+
+
+
+
+
+.wrapper {
+  position: relative;
+}
+
+.wrapper input {
+  height: 22px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 22px;
+}
+
+.wrapper input + label::before {
+  border: 1px solid #4a90e2;
+  content: "";
+  height: 22px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 22px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.wrapper input + label::after {
+  content: "";
+  background: #4a90e2;
+  border: 1px solid #fff;
+  border-left: 0;
+  border-top: 0;
+  height: 15px;
+  left: 10px;
+  opacity: 0;
+  position: absolute;
+  top: 4px;
+  transform: rotate(45deg);
+  width: 5px;
+  margin-top: 8px;
+}
+
+.wrapper input:checked + label::after {
+  opacity: 1;
+}
+
+.wrapper input:checked + label::before {
+  background: #4a90e2;
+}
+
+
+
+
+.close {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  overflow: hidden;
+}
+.close:hover::before, .close:hover::after {
+  background: #4a90e2;
+}
+.close::before, .close::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #979797;
+}
+.close::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
