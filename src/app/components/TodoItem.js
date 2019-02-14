@@ -1,45 +1,50 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 class TodoItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isEditing: false,
-      title: "...",
+      title: "..."
     };
   }
   componentDidMount() {
     this.setState({
       isEditing: false,
-      title: this.props.todo.title,
+      title: this.props.todo.title
     });
   }
   handleToggle = () => {
-    if (!this.state.isEditing) this.props.onClick()
-    else return
-  }
+    if (!this.state.isEditing) this.props.onClick();
+    else return;
+  };
   handleFocus = () => {
     this.setState({ isEditing: true });
-  }
+  };
   handleBlur = () => {
     this.setState({ isEditing: false });
-  }
-  handleChange = (e) => {
+  };
+  handleChange = e => {
     this.setState({ title: e.target.value });
-  }
-  handleKeyPress = (e) => {
+  };
+  handleKeyPress = e => {
     if (e.charCode === 13) {
       const todo = this.props.todo;
       this.props.updateTodo(todo.id, this.state.title, todo.status);
     }
-  }
+  };
   render() {
     const { todo, delTodoClick } = this.props;
     return (
       <li>
         <div className="wrapper">
-          <input id={todo.id} type="checkbox" checked={todo.status === "DONE"} onChange={this.handleToggle} />
-          <label for={todo.id}></label>
+          <input
+            id={todo.id}
+            type="checkbox"
+            checked={todo.status === "DONE"}
+            onChange={this.handleToggle}
+          />
+          <label htmlFor={todo.id} />
         </div>
         <input
           value={this.state.title}
@@ -49,9 +54,11 @@ class TodoItem extends Component {
           onChange={this.handleChange}
           onKeyPress={this.handleKeyPress}
         />
-        <button className="pull-right" onClick={delTodoClick}><span className="close"></span></button>
+        <button className="pull-right" onClick={delTodoClick}>
+          <span className="close" />
+        </button>
       </li>
-    )
+    );
   }
 }
 
